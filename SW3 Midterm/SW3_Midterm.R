@@ -14,8 +14,9 @@ total_missing <- function(dataset, column_name){
 total_missing(data, "Wind")
 
 
+
 #3
-values<- function(data, column_name, min = 1, max=nrow(dataset)){
-  mean(na.omit(data[min, column_name]), na.omit(data[max,column_name]))
+mean_missing_values<- function(dataset, column_name, min = 1, max=nrow(dataset)){
+  mean(na.omit(dataset[min, column_name]), na.omit(dataset[max,column_name]))
 }
-values(data, "Ozone",20,70)
+mean_missing_values(data, "Ozone",20,70)
