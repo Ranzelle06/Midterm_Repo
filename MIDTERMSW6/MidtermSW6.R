@@ -1,63 +1,42 @@
-install.packages("imager")
-install.packages("magick")
-install.packages("argparse")
+library (argparse)
+library (imager)
+library(reticulate)
 
 
 
-library(imager)
-rico <- system.file('extdata/index.jpg', package = 'imager')
-gelo <- load.image("C:/Users/RM A-225/Documents/Ricohermozo/Midterm_Repo/Midterm sw#2/cat.jpg")
-plot(gelo)
+parser <- ArgumentParser()
+parser$add_argument("-Image", help = "Local File Directory of image to augment")
+parser$add_argument("-H",type="integer", help = "Height")
+parser$add_argument("-W",type="integer", help = "Width")
+parser$add_argument("-Gray" ,type="logical",help = "To grayscale an image")
+parser$add_argument("-angle",type="integer", help = "To change the angle of the image")
+
+parser$print_help()    
+args <- parser$parse_args()  
 
 
-library(imager)
-fpath <- system.file('extdata/index.jpeg', package = 'imager')
-cat <- load.image("C:/Users/RM A-225/Documents/Ricohermozo/Midterm_Repo/MIDTERMSW6/index.jpg")
-sub <- function(data, w, h){
-  resize(data, w, h)
+print (args$Image)
+print (args$H)
+print (args$W)
+print (args$Gray)
+print (args$angle)
+
+augmented <- function(Image,H,W,Gray,angle){
+  if(Gray==TRUE){
+    img <- load.image(Image)
+    gray <- grayscale(img)
+    gray1 <- save.image(im=gray,file=paste0("image.R/GRAY_IMAGE.jpg"))
+  } 
+  if(H&&W > 1){
+    img <- load.image(Image)
+    imgrsze <- resize(img, size_x = H, size_y = W)
+    save.image(im = imgrsze,file=paste0("image.R/RESIZED_IMAGE.jpg"))
+  }
+  if(angle>1){
+    img <- load.image(Image)
+    invimg <- imrotate(im=img,angle)
+    invimg1 <- save.image(im=invimg,file=paste0("image.R/INVERTED_IMAGE.jpg"))
+  }
 }
-x <- sub(boats, 250, 250)
-plot(x, main = "RESIZED")
-save.image(x, "C:/Users/RM A-225/Documents/Ricohermozo/Midterm_Repo/MIDTERMSW6/indexresized.jpg")
-
-
-##2.2 Grayscale
-library(imager)
-fpath <- system.file('extdata/index1.jpg',package='imager') 
-mine <-load.image("C:/Users/RM A-225/Documents/Ricohermozo/Midterm_Repo/MIDTERMSW6/index1.jpg")
-subset <-function(data,x){
-  grayscale(data, method = "Luma", drop = x)
-}
-y <- subset(mine,TRUE)
-plot(y)
-save.image(y, "C:/Users/RM A-225/Documents/Ricohermozo/Midterm_Repo/MIDTERMSW6/index1New.jpg")
-
-
-##2.3 Invert Image
-library(imager)
-fpath <- system.file('extdata/dog.jpg',package='imager')
-truck <- load.image("C:/Users/RM A-225/Documents/Ricohermozo/Midterm_Repo/MIDTERMSW6/dog.jpg")
-subset <- function(data,x){
-  imrotate(data,x) %>% plot(main="Rotating")
-}
-y <- subset(truck,180)
-plot(y)
-save.image(y, "C:/Users/RM A-225/Documents/Ricohermozo/Midterm_Repo/MIDTERMSW6/dogNew.jpg")
-
-
-
-
-
-
-parser = argparse.ArgumentParser()
-parser.parse_args()
-
-
-parser.add_argument()
-
-
-args = parser.parse_args()
-
-
-
-
+#output 
+print(augmented(args$Image,args$H,args$W,args$Gray,args$angle))
