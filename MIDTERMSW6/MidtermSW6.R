@@ -6,8 +6,8 @@ library(reticulate)
 
 parser <- ArgumentParser()
 parser$add_argument("-Image", help = "Local File Directory of image to augment")
-parser$add_argument("-H",type="integer", help = "Height")
-parser$add_argument("-W",type="integer", help = "Width")
+parser$add_argument("-H",type="integer", help = "The Height of the Image")
+parser$add_argument("-W",type="integer", help = "The Width of the Image")
 parser$add_argument("-Gray" ,type="logical",help = "To grayscale an image")
 parser$add_argument("-angle",type="integer", help = "To change the angle of the image")
 
